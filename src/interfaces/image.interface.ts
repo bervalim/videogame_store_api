@@ -4,3 +4,5 @@ export interface IImage {
 }
 
 export type TCreateImageBodyRequest = Omit<IImage, "id">;
+
+export type TUpdateImageBodyRequest = Partial<TCreateImageBodyRequest>;
