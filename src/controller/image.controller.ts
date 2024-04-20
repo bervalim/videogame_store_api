@@ -7,12 +7,27 @@ import {
   readImageByIdService,
   updateImageByIdService,
 } from "../services/image.service";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 
 export const createImageController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const newImage: IImage = await createImageService(req.body);
+  const upload = await cloudinary.uploader.upload(
+    req.file!.path,
+    (error, result) => result
+  );
+  fs.unlink(req.file!.path, (error) => {
+    if (error) {
+      console.log(error);
+    }
+  });
+
+  const data = {
+    image: upload.url,
+  };
+  const newImage: IImage = await createImageService(data);
   return res.status(201).json(newImage);
 };
 
