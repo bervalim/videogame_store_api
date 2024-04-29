@@ -13,7 +13,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Image{
+model Product{
   id String @id @unique @default(uuid())
+  name String @db.VarChar(100)
+  price Int
+  description String?
   image String @db.VarChar(200)
 }

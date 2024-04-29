@@ -1,57 +1,64 @@
 import { app, prisma } from "../app";
 import AppError from "../errors/AppError.error";
 import {
-  IImage,
-  TCreateImageBodyRequest,
+  IProduct,
+  TCreateProductBodyRequest,
   TUpdateImageBodyRequest,
 } from "../interfaces/image.interface";
 
-export const createImageService = async (
-  data: TCreateImageBodyRequest
-): Promise<IImage> => {
-  const newImage: IImage = await prisma.image.create({ data });
-  return newImage;
+export const createProductService = async (
+  data: TCreateProductBodyRequest
+): Promise<IProduct> => {
+  const newProduct: IProduct = await prisma.product.create({
+    data: {
+      name: data.name,
+      price: Number(data.price),
+      description: data.description,
+      image: data.image,
+    },
+  });
+  return newProduct;
 };
 
-export const readAllImagesService = async (): Promise<IImage[]> => {
-  const images: IImage[] = await prisma.image.findMany();
-  return images;
+export const readAllProductsService = async (): Promise<IProduct[]> => {
+  const products: IProduct[] = await prisma.product.findMany();
+  return products;
 };
 
-export const readImageByIdService = async (id: string): Promise<IImage> => {
-  const image: IImage | null = await prisma.image.findUnique({
+export const readProductByIdService = async (id: string): Promise<IProduct> => {
+  const product: IProduct | null = await prisma.product.findUnique({
     where: { id: id },
   });
 
-  if (!image) throw new AppError("Image not found", 404);
+  if (!product) throw new AppError("Product not found", 404);
 
-  return image;
+  return product;
 };
 
-export const updateImageByIdService = async (
+export const updateProductByIdService = async (
   id: string,
   data: TUpdateImageBodyRequest
-): Promise<IImage> => {
-  const image: IImage | null = await prisma.image.findUnique({
+): Promise<IProduct> => {
+  const product: IProduct | null = await prisma.product.findUnique({
     where: { id: id },
   });
 
-  if (!image) throw new AppError("Image not found", 404);
+  if (!product) throw new AppError("Product not found", 404);
 
-  const updatedImage = await prisma.image.update({
+  const updatedProduct = await prisma.product.update({
     where: { id: id },
     data,
   });
 
-  return updatedImage;
+  return updatedProduct;
 };
 
-export const deleteImageByIdService = async (id: string): Promise<void> => {
-  const image: IImage | null = await prisma.image.findUnique({
+export const deleteProductByIdService = async (id: string): Promise<void> => {
+  const product: IProduct | null = await prisma.product.findUnique({
     where: { id: id },
   });
 
-  if (!image) throw new AppError("Image not found", 404);
+  if (!product) throw new AppError("Product not found", 404);
 
-  await prisma.image.delete({ where: { id: id } });
+  await prisma.product.delete({ where: { id: id } });
 };

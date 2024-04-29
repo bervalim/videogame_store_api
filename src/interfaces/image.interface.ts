@@ -1,8 +1,11 @@
-export interface IImage {
+export interface IProduct {
   id: string;
+  name: string;
+  price: number;
+  description: string | null;
   image: string;
 }
 
-export type TCreateImageBodyRequest = Omit<IImage, "id">;
+export type TCreateProductBodyRequest = Omit<IProduct, "id">;
 
-export type TUpdateImageBodyRequest = Partial<TCreateImageBodyRequest>;
+export type TUpdateImageBodyRequest = Partial<TCreateProductBodyRequest>;
